@@ -1,6 +1,6 @@
 [project]
 name = "szl-receipt-attn"
-version = "1.0.0"
+version = "0.1.0"
 description = "Original SZL Triton tiled fused attention with SHA3-256 receipts"
 readme = "README.md"
 license = { text = "Apache-2.0" }

@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 SZL Holdings
-"""Torch reference + dispatcher. Original SZL cut. No Dao source."""
+"""Torch reference + dispatcher. Original SZL cut. No Dao source.
+
+Named attn.py (not _ops.py): kernel-builder generates
+torch-ext/<name>/_ops.py with add_op_namespace_prefix. KERNEL original
+dispatcher is unchanged here.
+"""
 from __future__ import annotations
 
 from typing import Optional

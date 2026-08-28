@@ -3,7 +3,7 @@
 """szl-receipt-attn public API."""
 
 from ._chain import ReceiptChain
-from ._ops import receipt_attn, selfcheck
+from .attn import receipt_attn, selfcheck
 
 __all__ = ["ReceiptChain", "receipt_attn", "selfcheck"]
 __version__ = "0.1.0"
