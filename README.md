@@ -137,6 +137,25 @@ README.md
 Triton source lives in `torch-ext/`. This is a `[torch-noarch]` JIT
 kernel. Do not set `kernel.backend = "triton"` (obsolete).
 
+## Tests (kernel-builder)
+
+kernel-builder testshell sets `LOCAL_KERNELS` and tests load via
+`get_kernel` (not a fabricated Hub pass):
+
+```bash
+kernel-builder testshell
+python -m pytest tests -m kernels_ci --tb=short
+```
+
+Source tree, labeled CPU reference (no GPU required):
+
+```bash
+SZL_SOURCE_TREE_TESTS=1 PYTHONPATH=torch-ext python -m pytest tests --tb=short
+```
+
+CUDA/Triton cases skip cleanly when no GPU is present. A skip is not a
+pass. There is no `benchmarks/` directory and no speedup claim.
+
 ## Hypothesis (non-binding)
 
 Online softmax + SRAM tiles is the silhouette. The SZL cut is the
