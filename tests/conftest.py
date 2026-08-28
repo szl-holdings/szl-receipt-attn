@@ -33,15 +33,18 @@ def _load_via_get_kernel():
 def kernel_mod():
     """Load the kernel the way Hub users will: ``get_kernel``.
 
-    Source-tree developers may set ``SZL_SOURCE_TREE_TESTS=1`` to import
-    ``torch-ext/szl_receipt_attn`` directly. That path is labeled and is
-    not a fabricated Hub load.
+    kernel-builder testshell sets ``LOCAL_KERNELS`` — load failures there
+    are real failures, not skips. Source-tree developers may set
+    ``SZL_SOURCE_TREE_TESTS=1`` to import ``torch-ext/szl_receipt_attn``
+    directly. That path is labeled and is not a fabricated Hub load.
     """
     if os.environ.get("SZL_SOURCE_TREE_TESTS") == "1":
         sys.path.insert(0, str(_TORCH_EXT))
         import szl_receipt_attn
 
         return szl_receipt_attn
+    if os.environ.get("LOCAL_KERNELS"):
+        return _load_via_get_kernel()
     try:
         return _load_via_get_kernel()
     except Exception as exc:
