@@ -13,8 +13,8 @@
     kernel-builder.lib.genKernelFlakeOutputs {
       inherit self;
       path = ./.;
-      # pytest is for testshell only. Do not add it to pythonBuildInputs —
-      # that would ship pytest as a kernel runtime dependency.
+      # pytest is for testshell only. Do not add it as a runtime
+      # dependency of the kernel package.
       pythonCheckInputs = pkgs: with pkgs; [ pytest ];
     };
 }

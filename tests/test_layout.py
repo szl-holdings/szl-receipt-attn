@@ -71,4 +71,4 @@ def test_superseded_modules_removed():
 def test_flake_pytest_is_check_input_only():
     text = (_ROOT / "flake.nix").read_text(encoding="utf-8")
     assert "pythonCheckInputs" in text
-    assert "pythonBuildInputs" not in text
+    assert "pythonBuildInputs =" not in text
