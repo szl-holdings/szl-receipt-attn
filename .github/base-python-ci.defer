@@ -1,0 +1,1 @@
+tests/conftest.py imports the package's full dependency set (attention backends); the base gate's minimal install does not provide it. Repo CI owns execution. Ruff E9/F remains blocking here.
