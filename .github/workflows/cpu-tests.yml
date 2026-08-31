@@ -8,6 +8,10 @@ on:
     branches: [main]
   pull_request:
 
+
+permissions:
+  contents: read
+
 jobs:
   pytest-cpu:
     runs-on: ubuntu-latest
