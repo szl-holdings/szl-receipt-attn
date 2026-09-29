@@ -1,0 +1,422 @@
+{
+  "schema": "szl.hf-hub-import.v1",
+  "generator": "scripts/hf_hub_import.py",
+  "method": "anonymous public Hub API (no token, read-only)",
+  "generated_at": "2026-09-29T15:20:49Z",
+  "compared_against": {
+    "git_head": "6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3",
+    "tree": "working tree at generation time"
+  },
+  "path_map": {
+    "README.md": "CARD.md",
+    "build/<variant>/<module>/<file>": "torch-ext/<module>/<file>"
+  },
+  "targets": [
+    {
+      "repo_type": "kernel",
+      "repo_id": "SZLHOLDINGS/szl-receipt-attn",
+      "revision": "013dc8a884faa3ae9ac6a0835c5233440132ca3a",
+      "last_modified": "2026-08-29T16:00:55.000Z",
+      "card": {
+        "path": "hf/hub-import/kernel.README.md",
+        "blob_oid": "e925c5d53b92e40b5d71718ee62f5b5c9eb68f5c",
+        "sha256": "0b77acdd49c06d49b94b5be5e3471c62f05c5e278abd8aa60af34d36e04bbe21",
+        "bytes": 4072,
+        "has_front_matter": false,
+        "line_endings": "crlf",
+        "source_url": "https://huggingface.co/kernels/SZLHOLDINGS/szl-receipt-attn/resolve/013dc8a884faa3ae9ac6a0835c5233440132ca3a/README.md"
+      },
+      "files": [
+        {
+          "path": ".gitattributes",
+          "oid": "6b7a283f6a9d189d65bccdb859c6f80016f52228",
+          "size": 127,
+          "github_path": ".gitattributes",
+          "status": "differs"
+        },
+        {
+          "path": "BENCH.laptop-blackwell.json",
+          "oid": "562bfbebc488c2e2be5200bdc88d9c76c8e7d73f",
+          "size": 5499,
+          "github_path": "BENCH.laptop-blackwell.json",
+          "status": "hub_only"
+        },
+        {
+          "path": "OPERATIONAL.json",
+          "oid": "f2cc60017974cab9f7d7e60513f46bb739d50f47",
+          "size": 1937,
+          "github_path": "OPERATIONAL.json",
+          "status": "hub_only"
+        },
+        {
+          "path": "README.md",
+          "oid": "e925c5d53b92e40b5d71718ee62f5b5c9eb68f5c",
+          "size": 4072,
+          "github_path": "CARD.md",
+          "status": "differs"
+        },
+        {
+          "path": "build/torch-cpu/metadata.json",
+          "oid": "7342976a9cfda6ede84b30891427d8d6c9522b06",
+          "size": 388,
+          "github_path": "build/torch-cpu/metadata.json",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/__init__.py",
+          "oid": "f672eba5ee0dc3d3009e57826e9718187526ed97",
+          "size": 258,
+          "github_path": "torch-ext/szl_receipt_attn/__init__.py",
+          "status": "differs"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/_chain.py",
+          "oid": "0dd0d45b0e935b68a540243a9c9ef95bb4688100",
+          "size": 1396,
+          "github_path": "torch-ext/szl_receipt_attn/_chain.py",
+          "status": "same"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/_ops.py",
+          "oid": "52ceaeaed51de0218becc57d33e87a26713f5e81",
+          "size": 2806,
+          "github_path": "torch-ext/szl_receipt_attn/_ops.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/_triton.py",
+          "oid": "62e070b9733c202e1d0ae91ef7bf3711633b7eb9",
+          "size": 3477,
+          "github_path": "torch-ext/szl_receipt_attn/_triton.py",
+          "status": "same"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/api.py",
+          "oid": "32735e9691248e381e539e77252317d13aba009b",
+          "size": 4613,
+          "github_path": "torch-ext/szl_receipt_attn/api.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/const.py",
+          "oid": "9157cc1851cfe47b7e2051183fa7cc8301d9bc60",
+          "size": 1407,
+          "github_path": "torch-ext/szl_receipt_attn/const.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/ops.py",
+          "oid": "aeece009291a27d6fdd0e4784365ab95a6524ac7",
+          "size": 1175,
+          "github_path": "torch-ext/szl_receipt_attn/ops.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/receipt.py",
+          "oid": "3f73a034dba187c93a4bccf5595ea0aac2583d05",
+          "size": 4065,
+          "github_path": "torch-ext/szl_receipt_attn/receipt.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/reference.py",
+          "oid": "e7d999b82d3d448823274917234af38771506cc5",
+          "size": 7085,
+          "github_path": "torch-ext/szl_receipt_attn/reference.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/selfcheck.py",
+          "oid": "3443d5631728e63d9bcfbc7434440a9f27df4791",
+          "size": 7807,
+          "github_path": "torch-ext/szl_receipt_attn/selfcheck.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-cpu/szl_receipt_attn/triton_kernel.py",
+          "oid": "6a8e154b86f2afb1ba6b71dd0048dcb2a09e6362",
+          "size": 7330,
+          "github_path": "torch-ext/szl_receipt_attn/triton_kernel.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/metadata.json",
+          "oid": "6d139d47e1fb7eba3e9b4810c215df3b5f3fd1d7",
+          "size": 394,
+          "github_path": "build/torch-universal/metadata.json",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/__init__.py",
+          "oid": "f672eba5ee0dc3d3009e57826e9718187526ed97",
+          "size": 258,
+          "github_path": "torch-ext/szl_receipt_attn/__init__.py",
+          "status": "differs"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/_chain.py",
+          "oid": "0dd0d45b0e935b68a540243a9c9ef95bb4688100",
+          "size": 1396,
+          "github_path": "torch-ext/szl_receipt_attn/_chain.py",
+          "status": "same"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/_ops.py",
+          "oid": "52ceaeaed51de0218becc57d33e87a26713f5e81",
+          "size": 2806,
+          "github_path": "torch-ext/szl_receipt_attn/_ops.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/_triton.py",
+          "oid": "62e070b9733c202e1d0ae91ef7bf3711633b7eb9",
+          "size": 3477,
+          "github_path": "torch-ext/szl_receipt_attn/_triton.py",
+          "status": "same"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/api.py",
+          "oid": "32735e9691248e381e539e77252317d13aba009b",
+          "size": 4613,
+          "github_path": "torch-ext/szl_receipt_attn/api.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/const.py",
+          "oid": "9157cc1851cfe47b7e2051183fa7cc8301d9bc60",
+          "size": 1407,
+          "github_path": "torch-ext/szl_receipt_attn/const.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/ops.py",
+          "oid": "aeece009291a27d6fdd0e4784365ab95a6524ac7",
+          "size": 1175,
+          "github_path": "torch-ext/szl_receipt_attn/ops.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/receipt.py",
+          "oid": "3f73a034dba187c93a4bccf5595ea0aac2583d05",
+          "size": 4065,
+          "github_path": "torch-ext/szl_receipt_attn/receipt.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/reference.py",
+          "oid": "e7d999b82d3d448823274917234af38771506cc5",
+          "size": 7085,
+          "github_path": "torch-ext/szl_receipt_attn/reference.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/selfcheck.py",
+          "oid": "3443d5631728e63d9bcfbc7434440a9f27df4791",
+          "size": 7807,
+          "github_path": "torch-ext/szl_receipt_attn/selfcheck.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "build/torch-universal/szl_receipt_attn/triton_kernel.py",
+          "oid": "6a8e154b86f2afb1ba6b71dd0048dcb2a09e6362",
+          "size": 7330,
+          "github_path": "torch-ext/szl_receipt_attn/triton_kernel.py",
+          "status": "hub_only"
+        }
+      ],
+      "summary": {
+        "files": 28,
+        "same": 4,
+        "differs": 4,
+        "hub_only": 20
+      },
+      "github_only": [
+        "torch-ext/szl_receipt_attn/attn.py"
+      ]
+    },
+    {
+      "repo_type": "model",
+      "repo_id": "SZLHOLDINGS/szl-receipt-attn",
+      "revision": "e1383537e2dd74316a07fcbb683352af62dd24b0",
+      "last_modified": "2026-09-24T21:57:24.000Z",
+      "card": {
+        "path": "hf/hub-import/model.README.md",
+        "blob_oid": "c3a24d7934b16be0232390f83adebc07b5680b73",
+        "sha256": "2905be18de06c4499d370703aa23201f66c4cf47414ac2c42396d598a7181549",
+        "bytes": 5319,
+        "has_front_matter": true,
+        "line_endings": "lf",
+        "source_url": "https://huggingface.co/SZLHOLDINGS/szl-receipt-attn/resolve/e1383537e2dd74316a07fcbb683352af62dd24b0/README.md"
+      },
+      "files": [
+        {
+          "path": ".gitattributes",
+          "oid": "a6344aac8c09253b3b630fb776ae94478aa0275b",
+          "size": 1519,
+          "github_path": ".gitattributes",
+          "status": "differs"
+        },
+        {
+          "path": "BENCH.laptop-blackwell.json",
+          "oid": "562bfbebc488c2e2be5200bdc88d9c76c8e7d73f",
+          "size": 5499,
+          "github_path": "BENCH.laptop-blackwell.json",
+          "status": "hub_only"
+        },
+        {
+          "path": "LICENSE",
+          "oid": "be03f79d4ef224757dcad3564b780cb58efde543",
+          "size": 553,
+          "github_path": "LICENSE",
+          "status": "differs"
+        },
+        {
+          "path": "OPERATIONAL.json",
+          "oid": "f2cc60017974cab9f7d7e60513f46bb739d50f47",
+          "size": 1937,
+          "github_path": "OPERATIONAL.json",
+          "status": "hub_only"
+        },
+        {
+          "path": "README.md",
+          "oid": "c3a24d7934b16be0232390f83adebc07b5680b73",
+          "size": 5319,
+          "github_path": "CARD.md",
+          "status": "differs"
+        },
+        {
+          "path": "bom/model-bom.cdx.json",
+          "oid": "3690df3bde527b610dbd2370609389f2465e9a3a",
+          "size": 8544,
+          "github_path": "bom/model-bom.cdx.json",
+          "status": "hub_only"
+        },
+        {
+          "path": "build.toml",
+          "oid": "6150c97cc23babd3e3fa6cf0bc444d2dc313bf0d",
+          "size": 124,
+          "github_path": "build.toml",
+          "status": "differs"
+        },
+        {
+          "path": "og-card.png",
+          "oid": "df4ab189d430d065dd6b35c1d0685aecd23ffb14",
+          "size": 33032,
+          "github_path": "og-card.png",
+          "status": "hub_only"
+        },
+        {
+          "path": "receipt_attn.py",
+          "oid": "eb8ced96fa4e4361d3563f284f066b5c1cd5f44f",
+          "size": 3421,
+          "github_path": "receipt_attn.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "tests/__init__.py",
+          "oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "size": 0,
+          "github_path": "tests/__init__.py",
+          "status": "differs"
+        },
+        {
+          "path": "tests/conftest.py",
+          "oid": "ad65600f9e664e7ec529f8630d588723e8bc020b",
+          "size": 1873,
+          "github_path": "tests/conftest.py",
+          "status": "differs"
+        },
+        {
+          "path": "tests/test_receipt_attn.py",
+          "oid": "364aa20679ddaebba2537d881e7b0af350c942a8",
+          "size": 956,
+          "github_path": "tests/test_receipt_attn.py",
+          "status": "same"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/__init__.py",
+          "oid": "f672eba5ee0dc3d3009e57826e9718187526ed97",
+          "size": 258,
+          "github_path": "torch-ext/szl_receipt_attn/__init__.py",
+          "status": "differs"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/_chain.py",
+          "oid": "0dd0d45b0e935b68a540243a9c9ef95bb4688100",
+          "size": 1396,
+          "github_path": "torch-ext/szl_receipt_attn/_chain.py",
+          "status": "same"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/_ops.py",
+          "oid": "52ceaeaed51de0218becc57d33e87a26713f5e81",
+          "size": 2806,
+          "github_path": "torch-ext/szl_receipt_attn/_ops.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/_triton.py",
+          "oid": "62e070b9733c202e1d0ae91ef7bf3711633b7eb9",
+          "size": 3477,
+          "github_path": "torch-ext/szl_receipt_attn/_triton.py",
+          "status": "same"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/api.py",
+          "oid": "32735e9691248e381e539e77252317d13aba009b",
+          "size": 4613,
+          "github_path": "torch-ext/szl_receipt_attn/api.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/const.py",
+          "oid": "9157cc1851cfe47b7e2051183fa7cc8301d9bc60",
+          "size": 1407,
+          "github_path": "torch-ext/szl_receipt_attn/const.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/ops.py",
+          "oid": "aeece009291a27d6fdd0e4784365ab95a6524ac7",
+          "size": 1175,
+          "github_path": "torch-ext/szl_receipt_attn/ops.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/receipt.py",
+          "oid": "3f73a034dba187c93a4bccf5595ea0aac2583d05",
+          "size": 4065,
+          "github_path": "torch-ext/szl_receipt_attn/receipt.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/reference.py",
+          "oid": "e7d999b82d3d448823274917234af38771506cc5",
+          "size": 7085,
+          "github_path": "torch-ext/szl_receipt_attn/reference.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/selfcheck.py",
+          "oid": "3443d5631728e63d9bcfbc7434440a9f27df4791",
+          "size": 7807,
+          "github_path": "torch-ext/szl_receipt_attn/selfcheck.py",
+          "status": "hub_only"
+        },
+        {
+          "path": "torch-ext/szl_receipt_attn/triton_kernel.py",
+          "oid": "6a8e154b86f2afb1ba6b71dd0048dcb2a09e6362",
+          "size": 7330,
+          "github_path": "torch-ext/szl_receipt_attn/triton_kernel.py",
+          "status": "hub_only"
+        }
+      ],
+      "summary": {
+        "files": 23,
+        "same": 3,
+        "differs": 7,
+        "hub_only": 13
+      }
+    }
+  ]
+}
