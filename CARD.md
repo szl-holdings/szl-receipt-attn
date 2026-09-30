@@ -27,9 +27,17 @@ Original Triton tiled fused attention (FlashAttention silhouette, not a copy). E
 | Backends | cpu (torch reference), cuda (original Triton tiles, untimed) |
 
 ```python
+import re
+
+# Set only after owner qualification of this first-class Kernel Hub release.
+KERNEL_REVISION = "REPLACE_WITH_OWNER_QUALIFIED_KERNEL_COMMIT"
+if re.fullmatch(r"[0-9a-f]{40}", KERNEL_REVISION) is None:
+    raise ValueError("An owner-qualified immutable Kernel Hub commit is required")
+
+# This loads and executes remote Python code; review the pinned source first.
 from kernels import get_kernel
 
-attn = get_kernel("SZLHOLDINGS/szl-receipt-attn", revision="main", trust_remote_code=True)
+attn = get_kernel("SZLHOLDINGS/szl-receipt-attn", revision=KERNEL_REVISION, trust_remote_code=True)
 ```
 
 ## Doctrine
@@ -61,6 +69,21 @@ print(chain.verify(), selfcheck())
 ```
 
 `selfcheck()` never fabricates a pass. It runs a small CPU torch-reference check.
+
+## Source and Hub release scope
+
+Loading with `trust_remote_code=True` executes code from the selected first-class
+Kernel Hub repository. Review that immutable source and qualify a compatible
+`kernels` client before running it. Set `KERNEL_REVISION` to the owner-qualified
+Kernel Hub publication commit; this card does not establish one. A GitHub
+source commit or model-twin revision is not the provider revision. The syntax
+check in the example does not establish release qualification.
+
+This is staged GitHub card source, not evidence that the described build is
+currently published or qualified on either Hub twin. The imported Hub package lacks this tree's newer attn.py layout. This staged card must be published together with a matching qualified build, never as a card-only update.
+
+Publication/import context is recorded in [hf/README.md](https://github.com/szl-holdings/szl-receipt-attn/blob/010519f0c26906be3ecf07bd91c969e2295eb5d4/hf/README.md).
+Historical Hub-only benchmark receipts remain REPORTED at their stated scope.
 
 ## Claims
 
