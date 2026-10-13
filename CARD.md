@@ -14,9 +14,27 @@ szl:
 <!-- hf-card: type=kernel source=szl-holdings/szl-receipt-attn vars=hf/card.yaml -->
 <!-- Rendered by szl-holdings/.github hf-card/render.py. Edit hf/card.yaml in szl-holdings/szl-receipt-attn; do not edit this card on the Hub. -->
 
+<!-- Native artwork: szl-brand@4309f6fce89179331b0b3ed8c99494e76c5be256; Orbit v2 icon SHA-256 6e2b7d72a3af3d9602b79de41df0194ede6496a9661f057108ec224c0efc92e6. -->
+<p><a href="https://huggingface.co/spaces/SZLHOLDINGS/szl-command-lab"><img src="https://raw.githubusercontent.com/szl-holdings/szl-brand/4309f6fce89179331b0b3ed8c99494e76c5be256/kit/logos/orbit-v2/suite/szl-icon-32.svg" alt="SZL Holdings — Orbit v2" width="40" height="40" /></a></p>
+
+<p><small>Orbit v2 artwork © SZL Holdings · <a href="https://github.com/szl-holdings/szl-brand/blob/4309f6fce89179331b0b3ed8c99494e76c5be256/kit/LICENSE">CC BY 4.0</a>. Artifact and documentation licenses remain as declared by their source.</small></p>
+
 # szl-receipt-attn
 
 Original Triton tiled fused attention (FlashAttention silhouette, not a copy). Each call can emit a SHA3-256 receipt onto an optional chain. Original SZL construction in the fused-attention category, inspired by Dao et al. FA1/FA2/FA3. **NOT** a rehost of Dao-AILab flash-attention, kernels-community/flash-attn2/3/4, hopper/, cute/, or any `.cu`. No speedup claim.
+
+**Artifact:** Kernel · **Stage:** Not declared
+
+[Explore in Command Lab](https://huggingface.co/spaces/SZLHOLDINGS/szl-command-lab) · [Build](https://github.com/szl-holdings/szl-receipt-attn) · [Evidence](https://github.com/szl-holdings/szl-receipt-attn)
+
+## Before you use it
+
+- Kernel, not weights.
+- The Triton path covers CUDA inputs without `attn_mask` and head dim ≤ 32 only; everything else runs the torch reference.
+- Receipts prove integrity and declared origin only; they do not prove accuracy, readiness or performance.
+
+<details>
+<summary>Technical details and evidence</summary>
 
 ## Kernel
 
@@ -108,22 +126,17 @@ by the first canonical publish. They remain in this kernel repository's Git hist
 
 Publication context is recorded in [hf/README.md](https://github.com/szl-holdings/szl-receipt-attn/blob/main/hf/README.md).
 
-## Claims
+## Evidence record
 
-| Label | Claim | Evidence |
-| --- | --- | --- |
-| MEASURED | CPU correctness. `tests/test_receipt_attn.py` asserts that causal fp32 output on the torch-reference path matches `torch.nn.functional.scaled_dot_product_attention` within atol=1e-5, rtol=1e-5, that a one-call receipt chain verifies, and that `selfcheck()` reports ok. CI runs it on every pull request and every push to main (`cpu-tests.yml`). | [receipt](https://github.com/szl-holdings/szl-receipt-attn/blob/6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3/tests/test_receipt_attn.py) |
-| MEASURED | API edges. `tests/test_api_edges.py` asserts the same fp32 band against SDPA for a custom scale, unequal query and key lengths, and 4-D boolean masks; that the receipt's mask digest changes with the mask; that head dim 64 runs `torch_reference`; and that `prefer="triton"` on CPU records `torch_reference_fallback`. | [receipt](https://github.com/szl-holdings/szl-receipt-attn/blob/6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3/tests/test_api_edges.py) |
-| UNAVAILABLE | CUDA / Triton timing. The Triton path exists in source but has no timed GPU run and no cubin. CI has no GPU, so the CUDA path test is skipped there. | none linked |
-| NOT_CLAIMED | Any speed-up, tokens/s or energy figure. | none linked |
+**MEASURED** — CPU correctness. `tests/test_receipt_attn.py` asserts that causal fp32 output on the torch-reference path matches `torch.nn.functional.scaled_dot_product_attention` within atol=1e-5, rtol=1e-5, that a one-call receipt chain verifies, and that `selfcheck()` reports ok. CI runs it on every pull request and every push to main (`cpu-tests.yml`). [Receipt](https://github.com/szl-holdings/szl-receipt-attn/blob/6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3/tests/test_receipt_attn.py).
+
+**MEASURED** — API edges. `tests/test_api_edges.py` asserts the same fp32 band against SDPA for a custom scale, unequal query and key lengths, and 4-D boolean masks; that the receipt's mask digest changes with the mask; that head dim 64 runs `torch_reference`; and that `prefer="triton"` on CPU records `torch_reference_fallback`. [Receipt](https://github.com/szl-holdings/szl-receipt-attn/blob/6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3/tests/test_api_edges.py).
+
+**UNAVAILABLE** — CUDA / Triton timing. The Triton path exists in source but has no timed GPU run and no cubin. CI has no GPU, so the CUDA path test is skipped there. (no receipt linked).
+
+**NOT_CLAIMED** — Any speed-up, tokens/s or energy figure. (no receipt linked).
 
 Labels follow the [SZL claim language](https://github.com/szl-holdings/.github/blob/main/docs/CLAIM_LANGUAGE.md). A claim is only as strong as the receipt it links.
-
-## Limits
-
-- Kernel, not weights.
-- The Triton path covers CUDA inputs without `attn_mask` and head dim ≤ 32 only; everything else runs the torch reference.
-- Receipts prove integrity and declared origin only; they do not prove accuracy, readiness or performance.
 
 ## Source and provenance
 
@@ -133,4 +146,6 @@ Labels follow the [SZL claim language](https://github.com/szl-holdings/.github/b
 | Proof | <https://github.com/szl-holdings/szl-receipt-attn> |
 | License | `apache-2.0` |
 
-This card is written to the Hub only by the committed mirror workflow of szl-holdings/szl-receipt-attn.
+Rendering this card does not establish Hub publication. Verify any Hub copy against its source revision, publication evidence, and exact Hub revision.
+
+</details>
