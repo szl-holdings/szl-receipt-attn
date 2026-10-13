@@ -9,7 +9,7 @@ from kernels import get_kernel
 
 attn = get_kernel(
     "SZLHOLDINGS/szl-receipt-attn",
-    revision="main",
+    version=1,
     trust_remote_code=True,
 )
 

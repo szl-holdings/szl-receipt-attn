@@ -1,20 +1,62 @@
-# Hugging Face card source: staged, not published
+# Hugging Face publication
 
 This folder is the GitHub source for the two Hub twins of this repository:
 
-- the Kernel Hub repo `kernels/SZLHOLDINGS/szl-receipt-attn` (what `get_kernel` loads);
-- the model-type twin `SZLHOLDINGS/szl-receipt-attn`.
+- the Kernel Hub repo [`kernels/SZLHOLDINGS/szl-receipt-attn`](https://huggingface.co/kernels/SZLHOLDINGS/szl-receipt-attn), which is what `get_kernel` loads;
+- the model-type twin [`SZLHOLDINGS/szl-receipt-attn`](https://huggingface.co/SZLHOLDINGS/szl-receipt-attn), which is a pointer to the kernel repo and holds no loadable build.
+
+```python
+from kernels import get_kernel
+
+attn = get_kernel("SZLHOLDINGS/szl-receipt-attn", version=1, trust_remote_code=True)
+```
 
 | Path | What it is |
 | --- | --- |
-| `card.yaml` | The card source for **both** twins (plan decision D9: one source, one template). |
-| `../CARD.md` | Its rendering by the shared [`hf-card`](https://github.com/szl-holdings/.github/tree/main/hf-card) toolkit. This is the file a mirror publishes as `README.md`. |
-| `hub-import/` | The Hub cards exactly as the Hub served them, and `IMPORT.json`: the imported revisions, card digests, the full Hub file list of both twins, and how each Hub file compares with this repository. |
+| `card.yaml` | The kernel card source. |
+| `../CARD.md` | Its rendering by the shared [`hf-card`](https://github.com/szl-holdings/.github/tree/main/hf-card) toolkit. `hf-kernel-publish` publishes it as the kernel repo `README.md`. |
+| `model-twin-pointer.md` | The model twin's `README.md`: a pointer to the kernel repo. |
+| `kernel_smoke.py` | The smoke hook `hf-kernel-publish` runs on every loaded build (local and Hub): `selfcheck()`, a CPU comparison with torch SDPA, and one receipt that must verify. |
+| `hub-import/` | Historical snapshot: the Hub cards and file lists of both twins as the Hub served them on 2026-09-29, before the canonical publisher existed. Kept as a record; it is not refreshed by publication. |
 
-CI keeps them honest:
+## How the Hub is written
 
-- `.github/workflows/hf-card.yml` fails when `CARD.md` drifts from `card.yaml`, or when the card breaks the card contract: front matter (`license`, `library_name: kernels`, `szl.source_repo`, `szl.proof_url`), and decision D10 (every `MEASURED` claim links a receipt pinned to a commit of this repository).
-- `tests/test_hf_card_source.py` checks, offline, that `hub-import/` still holds the imported bytes and that `CARD.md` names this repository and its Apache-2.0 license.
+`.github/workflows/hf-kernel-publish.yml` with `scripts/szl_kernel_publish.py` and the
+config `.github/hf-kernels.json` is the only writer of both twins.
+
+- **Pull request:** builds `build/torch-cpu` and `build/torch-universal` from
+  `torch-ext/szl_receipt_attn` and loads both with `kernels==0.17.2` and CPU torch. No Hub
+  access, no secret.
+- **Release published** (or a dispatch from `main`): the same build, then a fast-forward Git
+  push of one managed tree to the kernel repo's `main` and `v1` branches. The publisher owns
+  all of `build/`, so superseded modules are deleted. It also writes `CARD.md` as `README.md`,
+  `LICENSE`, and `SZL_KERNEL_SOURCE.json` (the GitHub commit the build came from), and prunes
+  the stale Hub-only plates `OPERATIONAL.json` and `BENCH.laptop-blackwell.json`.
+- **Verify:** a fresh, anonymous job calls `get_kernel(..., version=1)` and
+  `get_kernel(..., revision=...)` on `main`, and fails if the served files differ from GitHub.
+- **Model twin:** only after verify passes, its `README.md` becomes the pointer card, and
+  `build/`, `torch-ext/`, `tests/`, `build.toml`, the stray `receipt_attn.py` upload and the
+  stale plates are removed. `LICENSE`, `bom/` and `og-card.png` are kept.
+- **Weekly:** a drift guard re-verifies what `get_kernel` serves and fails with `SOURCE_AHEAD`
+  when the latest release changed the kernel but was never published.
+
+The kernel major is `version` in `.github/hf-kernels.json`, not the release tag. Bumping it
+starts `v2` and leaves `v1` frozen. The credential is the org secret `HF_TOKEN`, exposed only
+to the two writing steps.
+
+To repair or republish, dispatch `hf-kernel-publish` from `main` with `source_ref` (a tag,
+branch or commit on `main`); `dry_run=true` plans and checks the write without pushing.
+
+CI also keeps the card source honest:
+
+- `.github/workflows/hf-card.yml` fails when `CARD.md` drifts from `card.yaml`, or when the
+  card breaks the shared card contract.
+- `hf-kernel-publish` lints the card it publishes: no floating `main` revision, no bare
+  `get_kernel` call, no placeholders, and `version=1` must be shown.
+- `tests/test_hf_card_source.py` checks, offline, that `hub-import/` still holds the imported
+  bytes, and that `CARD.md` names this repository and its Apache-2.0 license.
+- `tests/test_hf_kernel_config.py` checks, offline, that the publisher config, the kernel card
+  and the pointer card pass the publisher's own validation.
 
 To edit the card, change `card.yaml` and re-render:
 
@@ -22,26 +64,8 @@ To edit the card, change `card.yaml` and re-render:
 python <hf-card>/render.py hf/card.yaml --out CARD.md
 ```
 
-To refresh the import (read-only, anonymous public Hub API, no token):
+## Other writers
 
-```bash
-python scripts/hf_hub_import.py fetch
-```
-
-## Publish status: blocked on owner actions
-
-**Nothing in this repository writes the Hub.** Both twins still serve the cards in `hub-import/`; the Kernel Hub card has no front matter, so it carries no license tag. Publishing `CARD.md` needs all of:
-
-1. **An HF credential for this repository.** Preferred: Trusted Publishers for `SZLHOLDINGS/szl-receipt-attn` and `kernels/SZLHOLDINGS/szl-receipt-attn`, bound to this repository's mirror workflow on `main`. Fallback: a repository secret `HF_TOKEN` scoped to those two repos. This repository has no HF secret today. (Owner action.)
-2. **The shared mirror.** `reusable-hf-mirror.yml` (model and kernel targets) is not merged in `szl-holdings/.github`; workflow changes there wait for the owner's trust-root review. No copy-pasted mirror is added here in the meantime.
-3. **A kernel write path.** `huggingface_hub` 2.0.0 refuses commits to `repo_type="kernel"`; Git is the only proven transport.
-
-When those exist, a thin caller of the shared mirror publishes `CARD.md` as `README.md` to both twins, ships `LICENSE` (the kernel repo has none on the Hub, and the model twin's `LICENSE` differs from this repository's), and keeps the Hub-only receipts listed in `hub-import/IMPORT.json`. Until then, nobody edits these cards on the Hub.
-
-## What the import shows
-
-Read the numbers from `hub-import/IMPORT.json`; the points below are what they mean.
-
-- **The Hub kernel build predates this tree.** It still ships the modules this repository removed (`api.py`, `const.py`, `ops.py`, `receipt.py`, `reference.py`, `selfcheck.py`, `triton_kernel.py`, `_ops.py`; see `tests/test_layout.py::test_superseded_modules_removed`), while `torch-ext/szl_receipt_attn/attn.py` is not on the Hub. The staged card describes this repository, so it must publish together with a build of this tree, never on its own.
-- **Hub-only receipts.** `BENCH.laptop-blackwell.json` and `OPERATIONAL.json` exist only on the Hub. The staged card cites them as `REPORTED`, not `MEASURED`.
-- **Other writers.** The model twin also carries `receipt_attn.py`, uploaded by `szl-holdings/a11oy` `atelier-hub-publish.yml` (a cross-writer the plan retires). Its card thumbnail `og-card.png` exists only on the Hub; the staged card does not reference it.
+The `szl-holdings/a11oy` `atelier-hub-publish.yml` workflow has uploaded `receipt_attn.py` to
+the model twin. That cross-repository writer is to be retired; until then the twin publish
+removes that file again.

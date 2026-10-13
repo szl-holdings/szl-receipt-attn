@@ -1,0 +1,38 @@
+{
+  "schema": "szl.hf-kernels/v1",
+  "$comment": "Consumed by .github/workflows/hf-kernel-publish.yml via scripts/szl_kernel_publish.py. This repository is the only writer of kernels/SZLHOLDINGS/szl-receipt-attn and of the model twin SZLHOLDINGS/szl-receipt-attn (pointer card only).",
+  "kernels": [
+    {
+      "repo_id": "SZLHOLDINGS/szl-receipt-attn",
+      "name": "szl-receipt-attn",
+      "version": 1,
+      "license": "Apache-2.0",
+      "source_repository": "szl-holdings/szl-receipt-attn",
+      "packages": [
+        { "src": "torch-ext/szl_receipt_attn", "name": "szl_receipt_attn" }
+      ],
+      "card": "CARD.md",
+      "license_file": "LICENSE",
+      "prune_paths": [
+        "OPERATIONAL.json",
+        "BENCH.laptop-blackwell.json"
+      ],
+      "python_depends": [],
+      "smoke": "hf/kernel_smoke.py",
+      "model_twin": {
+        "repo_id": "SZLHOLDINGS/szl-receipt-attn",
+        "mode": "pointer",
+        "card": "hf/model-twin-pointer.md",
+        "prune_paths": [
+          "build/",
+          "torch-ext/",
+          "tests/",
+          "build.toml",
+          "receipt_attn.py",
+          "OPERATIONAL.json",
+          "BENCH.laptop-blackwell.json"
+        ]
+      }
+    }
+  ]
+}
