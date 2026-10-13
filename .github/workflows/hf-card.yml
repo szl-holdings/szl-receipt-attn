@@ -31,12 +31,12 @@ jobs:
         with:
           persist-credentials: false
 
-      # hf-card as merged in szl-holdings/.github#801. Bump deliberately.
+      # Candidate renderer from szl-holdings/.github#924; adopt only after canonical acceptance.
       - name: Check out hf-card at the pinned commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: szl-holdings/.github
-          ref: 4579c55d8a9d03f6d5e24fd2ab17bcc947d4bcd3
+          ref: d7f97c7d038d1dc3a3d304808d0ed2748a8f240f
           path: .hf-card-toolkit
           sparse-checkout: hf-card
           persist-credentials: false
