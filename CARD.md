@@ -27,17 +27,12 @@ Original Triton tiled fused attention (FlashAttention silhouette, not a copy). E
 | Backends | cpu (torch reference), cuda (original Triton tiles, untimed) |
 
 ```python
-import re
-
-# Set only after owner qualification of this first-class Kernel Hub release.
-KERNEL_REVISION = "REPLACE_WITH_OWNER_QUALIFIED_KERNEL_COMMIT"
-if re.fullmatch(r"[0-9a-f]{40}", KERNEL_REVISION) is None:
-    raise ValueError("An owner-qualified immutable Kernel Hub commit is required")
-
-# This loads and executes remote Python code; review the pinned source first.
+# pip install "kernels>=0.17.2" torch
+# This loads and executes remote Python code; review the published source first.
 from kernels import get_kernel
 
-attn = get_kernel("SZLHOLDINGS/szl-receipt-attn", revision=KERNEL_REVISION, trust_remote_code=True)
+# version=1 resolves the v1 branch of the kernel repo (the stable API channel).
+attn = get_kernel("SZLHOLDINGS/szl-receipt-attn", version=1, trust_remote_code=True)
 ```
 
 ## Doctrine
@@ -70,20 +65,48 @@ print(chain.verify(), selfcheck())
 
 `selfcheck()` never fabricates a pass. It runs a small CPU torch-reference check.
 
+## Loading and pinning
+
+- `version=1` resolves the `v1` branch of this kernel repository. It is republished
+  from GitHub on every release; a breaking API change starts `v2` and leaves `v1` frozen.
+  The `kernels` library refuses a call that names neither a version nor a revision.
+- `trust_remote_code` is required: SZLHOLDINGS is not a trusted kernel publisher on the
+  Hub. The narrowest form is `trust_remote_code=["SZLHOLDINGS/szl-receipt-attn"]`.
+- CPU hosts load `build/torch-cpu`; CUDA and other hosts load `build/torch-universal`.
+  Both variants carry identical code, built from the same GitHub commit.
+
+To pin an exact build for production, resolve the `v1` branch to a commit of this
+kernel repository and record it in your lockfile:
+
+```python
+from huggingface_hub import HfApi
+from kernels import get_kernel
+
+refs = HfApi().list_repo_refs("SZLHOLDINGS/szl-receipt-attn", repo_type="kernel")
+pin = next(b.target_commit for b in refs.branches if b.name == "v1")
+attn = get_kernel("SZLHOLDINGS/szl-receipt-attn", revision=pin,
+                  trust_remote_code=["SZLHOLDINGS/szl-receipt-attn"])
+```
+
+A GitHub source commit or a commit of the model-type twin is not a kernel revision and
+does not resolve here.
+
 ## Source and Hub release scope
 
-Loading with `trust_remote_code=True` executes code from the selected first-class
-Kernel Hub repository. Review that immutable source and qualify a compatible
-`kernels` client before running it. Set `KERNEL_REVISION` to the owner-qualified
-Kernel Hub publication commit; this card does not establish one. A GitHub
-source commit or model-twin revision is not the provider revision. The syntax
-check in the example does not establish release qualification.
+This repository is written only by the `hf-kernel-publish` workflow of
+[szl-holdings/szl-receipt-attn](https://github.com/szl-holdings/szl-receipt-attn).
+It builds `build/torch-cpu` and `build/torch-universal` from `torch-ext/szl_receipt_attn`
+at one GitHub commit, publishes them with this card and `LICENSE` to `main` and `v1`,
+and then loads the result through `get_kernel` in a fresh environment; the run fails
+if the served bytes differ from GitHub. `SZL_KERNEL_SOURCE.json` here names the
+GitHub commit the build came from. Publication receipts are artifacts of that
+workflow's runs; they are not committed to this card.
 
-This is staged GitHub card source, not evidence that the described build is
-currently published or qualified on either Hub twin. The imported Hub package lacks this tree's newer attn.py layout. This staged card must be published together with a matching qualified build, never as a card-only update.
+The Hub-only plates `OPERATIONAL.json` and `BENCH.laptop-blackwell.json` (2026-08-29,
+kernels 0.16.1, source commit 1aa6cf77) described a superseded build and were removed
+by the first canonical publish. They remain in this kernel repository's Git history.
 
-Publication/import context is recorded in [hf/README.md](https://github.com/szl-holdings/szl-receipt-attn/blob/010519f0c26906be3ecf07bd91c969e2295eb5d4/hf/README.md).
-Historical Hub-only benchmark receipts remain REPORTED at their stated scope.
+Publication context is recorded in [hf/README.md](https://github.com/szl-holdings/szl-receipt-attn/blob/main/hf/README.md).
 
 ## Claims
 
@@ -91,7 +114,6 @@ Historical Hub-only benchmark receipts remain REPORTED at their stated scope.
 | --- | --- | --- |
 | MEASURED | CPU correctness. `tests/test_receipt_attn.py` asserts that causal fp32 output on the torch-reference path matches `torch.nn.functional.scaled_dot_product_attention` within atol=1e-5, rtol=1e-5, that a one-call receipt chain verifies, and that `selfcheck()` reports ok. CI runs it on every pull request and every push to main (`cpu-tests.yml`). | [receipt](https://github.com/szl-holdings/szl-receipt-attn/blob/6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3/tests/test_receipt_attn.py) |
 | MEASURED | API edges. `tests/test_api_edges.py` asserts the same fp32 band against SDPA for a custom scale, unequal query and key lengths, and 4-D boolean masks; that the receipt's mask digest changes with the mask; that head dim 64 runs `torch_reference`; and that `prefer="triton"` on CPU records `torch_reference_fallback`. | [receipt](https://github.com/szl-holdings/szl-receipt-attn/blob/6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3/tests/test_api_edges.py) |
-| REPORTED | CPU `get_kernel` load from the Kernel Hub (kernels 0.16.1, `build/torch-universal` and `build/torch-cpu`, `selfcheck` ok) and a local pytest run, recorded 2026-08-29 in the Hub-only `BENCH.laptop-blackwell.json` and `OPERATIONAL.json` against source commit 1aa6cf77. No receipt for them is committed in this repository. | none linked |
 | UNAVAILABLE | CUDA / Triton timing. The Triton path exists in source but has no timed GPU run and no cubin. CI has no GPU, so the CUDA path test is skipped there. | none linked |
 | NOT_CLAIMED | Any speed-up, tokens/s or energy figure. | none linked |
 

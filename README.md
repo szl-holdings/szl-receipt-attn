@@ -20,47 +20,35 @@ Each call can emit a SHA3-256 receipt onto an optional chain.
 Doctrine v11 LOCKED. Λ = Conjecture 1 (advisory; uniqueness OPEN).  
 Original SZL construction in the fused-attention category. Inspired by Dao et al. FA1/FA2/FA3. **NOT** a rehost of Dao-AILab flash-attention, kernels-community/flash-attn2/3/4, hopper/, cute/, or any `.cu`.
 
-GitHub bytes are the artifact. Hub is the publish mirror. ATELIER owns Hub cards.
+GitHub bytes are the artifact. The Hub is the publish target, written only by this
+repository's [`hf-kernel-publish`](.github/workflows/hf-kernel-publish.yml) workflow.
 
 ## Load
 
-The [staged card and publisher plan](hf/README.md) records that the Hub build
-predates this source tree. The current source APIs require a separately
-verified matching build publication; a reachable Hub repo does not establish it.
-
-Set `SZL_RECEIPT_ATTN_HF_REVISION` to the immutable **first-class Kernel Hub** commit
-from a verified publication of [`kernels/SZLHOLDINGS/szl-receipt-attn`](https://huggingface.co/kernels/SZLHOLDINGS/szl-receipt-attn). Use the `kernels`
-client version qualified with that publication. The GitHub source commit,
-model-type mirror commit, and Kernel Hub commit are separate identities.
-An observed head, a branch name, or a successful import does not qualify a release.
-
-`trust_remote_code=True` permits execution of the selected repository's Python.
-Review that exact revision, its provenance and publication evidence before enabling it.
-The format check below only rejects missing or mutable revision inputs; it does not
-verify hashes, publisher authorization or compatibility. If that evidence is unavailable,
-stop the Hub load and use separately reviewed local source for development.
-
 ```python
-import os
-import re
-
-hf_revision = os.environ.get("SZL_RECEIPT_ATTN_HF_REVISION", "")
-if re.fullmatch(r"[0-9a-f]{40}", hf_revision) is None:
-    raise ValueError("A verified immutable Kernel Hub revision is required")
-
+# pip install "kernels>=0.17.2" torch
 from kernels import get_kernel
 
-attn = get_kernel(
-    "SZLHOLDINGS/szl-receipt-attn",
-    revision=hf_revision,
-    trust_remote_code=True,
-)
+attn = get_kernel("SZLHOLDINGS/szl-receipt-attn", version=1, trust_remote_code=True)
 ```
+
+`version=1` resolves the `v1` branch of the Kernel Hub repo
+[`kernels/SZLHOLDINGS/szl-receipt-attn`](https://huggingface.co/kernels/SZLHOLDINGS/szl-receipt-attn).
+`hf-kernel-publish` builds it from `torch-ext/szl_receipt_attn` at one commit of this
+repository, publishes it, and then loads it through `get_kernel` in a fresh environment;
+the run fails if the served bytes differ from GitHub. `SZL_KERNEL_SOURCE.json` on the Hub
+names that commit. The model-type repo `SZLHOLDINGS/szl-receipt-attn` is only a pointer.
+
+`trust_remote_code=True` permits execution of the kernel repository's Python; the
+narrowest form is `trust_remote_code=["SZLHOLDINGS/szl-receipt-attn"]`. For production,
+pin the `v1` branch's current kernel-repo commit with `revision=<commit>`: the
+[kernel card](CARD.md) shows how. GitHub source commits and model-repo commits are not
+kernel revisions. Publication details are in [hf/README.md](hf/README.md).
 
 ## Source-only development
 
 Review [`torch-ext/szl_receipt_attn/`](https://github.com/szl-holdings/szl-receipt-attn/tree/010519f0c26906be3ecf07bd91c969e2295eb5d4/torch-ext/szl_receipt_attn)
-at that immutable GitHub source revision, separately from any Hub release.
+at the GitHub commit you intend to run, separately from any Hub release.
 With the source's dependencies already available, run from the reviewed checkout root:
 
 ```python

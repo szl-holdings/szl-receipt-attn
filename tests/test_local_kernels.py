@@ -18,6 +18,6 @@ def test_local_kernels_get_kernel_is_required():
     kernels = pytest.importorskip("kernels")
     kernels.get_kernel(
         "SZLHOLDINGS/szl-receipt-attn",
-        revision="main",
+        version=1,
         trust_remote_code=True,
     )

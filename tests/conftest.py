@@ -24,7 +24,7 @@ def _load_via_get_kernel():
     kernels = pytest.importorskip("kernels")
     return kernels.get_kernel(
         "SZLHOLDINGS/szl-receipt-attn",
-        revision="main",
+        version=1,
         trust_remote_code=True,
     )
 
