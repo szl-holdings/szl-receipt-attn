@@ -8,6 +8,8 @@ dispatcher is unchanged here.
 """
 from __future__ import annotations
 
+import hashlib
+import sys
 from typing import Optional
 
 import torch
@@ -15,13 +17,48 @@ import torch.nn.functional as F
 
 from ._chain import ReceiptChain
 
+# Version tag carried in-band by every receipt "mask" value. The earlier
+# unversioned form ("causal=<b>:none" or "causal=<b>:sum=<total>:shape=(...)")
+# bound only the element sum, so equal-count masks with different topology
+# collided. Nothing in the estate parses that form and it is not emitted any
+# more; old chains still verify because ReceiptChain hashes the value opaquely.
+# An unversioned value can never equal a v1 value, which always starts with
+# this tag, so readers can tell the two apart and reject what they don't know.
+MASK_IDENTITY_VERSION = "szl-mask-id/v1"
+
+_HASH_CHUNK_ELEMS = 1 << 20
+
 
 def _mask_digest(attn_mask: Optional[torch.Tensor], causal: bool) -> str:
-    bits = f"causal={int(causal)}"
+    """Versioned canonical identity of ``(attn_mask, causal)`` for receipts.
+
+    ``szl-mask-id/v1;causal=<0|1>;mask=none`` when there is no mask, else
+    ``szl-mask-id/v1;causal=<0|1>;dtype=<dtype>;shape=<d0>x<d1>...;sha256=<hex>``.
+    The digest is SHA-256 over the mask's canonical bytes: elements in C
+    (row-major) order of the logical shape, so memory layout, strides and
+    device do not matter; bool masks as one uint8 0/1 per element; every
+    other dtype as its own element bytes, little-endian. dtype stays in the
+    identity because SDPA reads bool masks as keep-masks and float masks as
+    additive biases. The identity binds exact bytes, never semantic
+    equivalence (e.g. -0.0 and 0.0 bias entries get different identities).
+    """
+    head = f"{MASK_IDENTITY_VERSION};causal={int(bool(causal))}"
     if attn_mask is None:
-        return bits + ":none"
-    h = float(torch.sum(attn_mask.to(torch.float32)).item())
-    return f"{bits}:sum={h:.6g}:shape={tuple(attn_mask.shape)}"
+        return f"{head};mask=none"
+    canonical = attn_mask.detach().to(device="cpu")
+    dtype = str(canonical.dtype).replace("torch.", "")
+    if canonical.dtype == torch.bool:
+        canonical = canonical.to(torch.uint8)
+    shape = "x".join(str(int(dim)) for dim in canonical.shape)
+    flat = canonical.contiguous().reshape(-1)
+    width = flat.element_size()
+    digest = hashlib.sha256()
+    for start in range(0, flat.numel(), _HASH_CHUNK_ELEMS):
+        raw = flat[start : start + _HASH_CHUNK_ELEMS].contiguous().view(torch.uint8)
+        if width > 1 and sys.byteorder == "big":
+            raw = raw.reshape(-1, width).flip(-1).reshape(-1)
+        digest.update(bytes(raw.tolist()))
+    return f"{head};dtype={dtype};shape={shape};sha256={digest.hexdigest()}"
 
 
 def _torch_attn(q, k, v, *, causal, attn_mask, scale):
