@@ -79,8 +79,10 @@ def receipt_attn(
     prefer: str = "auto",
 ) -> torch.Tensor:
     path = "torch_reference"
-    use_triton = prefer == "triton" or (
-        prefer == "auto" and q.is_cuda and attn_mask is None and q.shape[-1] <= 32
+    # The Triton kernel has no arbitrary-mask input. Preserve mask semantics
+    # even when callers prefer Triton by selecting the reference backend.
+    use_triton = attn_mask is None and (
+        prefer == "triton" or (prefer == "auto" and q.is_cuda and q.shape[-1] <= 32)
     )
     if use_triton:
         try:
