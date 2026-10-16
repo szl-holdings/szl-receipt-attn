@@ -85,6 +85,10 @@ print(chain.verify(), selfcheck())
 | `torch_reference` | CPU, or `prefer="torch"`, or mask / head dim > 32 |
 | `torch_reference_fallback` | Triton was selected and raised |
 
+A supplied `attn_mask` always selects the mask-aware Torch reference, including
+when `prefer="triton"`. The Triton kernel does not accept arbitrary masks;
+the preference cannot discard one. Receipts name the backend actually used.
+
 No speedup claims. No fabricated CUDA benches in this repo.
 
 ## Correctness band (documented, not a bench)
