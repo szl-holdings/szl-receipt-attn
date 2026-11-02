@@ -16,6 +16,8 @@ Canonical GitHub source for `SZLHOLDINGS/szl-receipt-attn`.
 
 Original Triton tiled fused attention (FlashAttention silhouette, not a copy).
 Each call can emit a SHA3-256 receipt onto an optional chain.
+`ReceiptChain.emit` snapshots nested payload values when recording a receipt;
+later changes to the caller's dictionaries or lists do not rewrite earlier receipts.
 
 Doctrine v11 LOCKED. Λ = Conjecture 1 (advisory; uniqueness OPEN).  
 Original SZL construction in the fused-attention category. Inspired by Dao et al. FA1/FA2/FA3. **NOT** a rehost of Dao-AILab flash-attention, kernels-community/flash-attn2/3/4, hopper/, cute/, or any `.cu`.

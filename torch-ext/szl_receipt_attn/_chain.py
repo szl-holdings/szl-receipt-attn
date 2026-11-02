@@ -3,6 +3,7 @@
 """Original SHA3-256 receipt chain."""
 from __future__ import annotations
 
+from copy import deepcopy
 import hashlib
 import json
 from typing import Any, List, Optional, Tuple
@@ -24,7 +25,7 @@ class ReceiptChain:
 
     def emit(self, payload: dict) -> str:
         prev = self._rows[-1]["digest"] if self._rows else GENESIS
-        body = dict(payload)
+        body = deepcopy(dict(payload))
         body["seq"] = len(self._rows)
         body["prev"] = prev
         digest = _sha3(_canon(body))
