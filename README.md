@@ -79,6 +79,18 @@ print(chain.verify(), selfcheck())
 
 `selfcheck()` never fabricates a pass. It runs a small CPU torch-reference check.
 
+<!-- SZL-KERNEL-STATUS:import-LIVE:START -->
+## Status
+
+> **STATUS: import-LIVE** on CPU (`torch_reference` / Kernel Hub `get_kernel`). GPU/Triton timing is **UNAVAILABLE**.
+
+| Thing | Label | Method / N / date / what-NOT |
+|---|---|---|
+| CPU import / `selfcheck` | **import-LIVE** | Local source-tree import + `selfcheck` ok on 2026-11-04 (HQ; torch 2.14.1; CUDA false). `path=torch_reference`, `chain_ok=true`, `max_abs_vs_sdpa=0.0`. What-NOT: no tokens/s; no joules; not a Hub immutable-pin qualification. |
+| Triton / CUDA timing | **UNAVAILABLE** | Triton path exists in source for CUDA inputs without `attn_mask` and head dim ≤ 32, but no cubin and no timed GPU run. CI has no GPU. |
+
+<!-- SZL-KERNEL-STATUS:import-LIVE:END -->
+
 ## Paths (honesty)
 
 | `path` | When |

@@ -45,6 +45,16 @@ sections:
     body: >-
       Doctrine v11 LOCKED. Λ = Conjecture 1 (advisory; uniqueness OPEN, never a
       theorem). GitHub bytes are the artifact; the Hub is the publish mirror.
+  - heading: Status (honesty)
+    body: |
+      > **STATUS: import-LIVE** on CPU (`torch_reference` / Kernel Hub `get_kernel`).
+      > GPU / Triton timing is **UNAVAILABLE**. No speedup claim. Credit Stephen Lutar.
+      > Silhouette of FlashAttention tiled IO-aware softmax (leaders tweak map) — not a Dao rehost.
+
+      | Thing | Label | Method / what-NOT |
+      |---|---|---|
+      | CPU import / `selfcheck` | **import-LIVE** | Local source-tree import + `selfcheck` ok on 2026-11-04 (HQ; torch 2.14.1; CUDA false). `path=torch_reference`, `chain_ok=true`, `max_abs_vs_sdpa=0.0`. What-NOT: no tokens/s; no joules; not a Hub immutable-pin qualification. |
+      | Triton / CUDA timing | **UNAVAILABLE** | Triton path exists in source for CUDA inputs without `attn_mask` and head dim ≤ 32, but no cubin and no timed GPU run. CI has no GPU. |
   - heading: Paths (honesty)
     body: |
       | `path` | When |
