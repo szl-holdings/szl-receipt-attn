@@ -117,3 +117,5 @@ fp32 vs `torch.nn.functional.scaled_dot_product_attention`: **atol=1e-5, rtol=1e
 ## License
 
 Apache-2.0. Copyright 2026 SZL Holdings. Owner: Stephen P. Lutar Jr. / SZL Holdings. Homepage: https://a-11-oy.com
+
+Estate on Hugging Face: models, datasets and Spaces are published under the [SZLHOLDINGS](https://huggingface.co/SZLHOLDINGS) org.
