@@ -137,6 +137,14 @@ by the first canonical publish. They remain in this kernel repository's Git hist
 
 Publication context is recorded in [hf/README.md](https://github.com/szl-holdings/szl-receipt-attn/blob/main/hf/README.md).
 
+## Card completeness (2026-11-12)
+
+This section adds required card sections the card above did not have. It states only what files in this repository and the estate's own receipt datasets show; nothing here is a new result.
+
+### Benchmarks
+
+Not yet benchmarked. As of 2026-11-12 this repository has no benchmark results (latency, throughput or correctness-vs-reference timings). Published builds: `torch-cpu`, `torch-universal`. No GPU build is published, so no GPU performance claim is made.
+
 ## Evidence record
 
 **MEASURED** — CPU correctness. `tests/test_receipt_attn.py` asserts that causal fp32 output on the torch-reference path matches `torch.nn.functional.scaled_dot_product_attention` within atol=1e-5, rtol=1e-5, that a one-call receipt chain verifies, and that `selfcheck()` reports ok. CI runs it on every pull request and every push to main (`cpu-tests.yml`). [Receipt](https://github.com/szl-holdings/szl-receipt-attn/blob/6bd6a7eb1c6ae9703b87afed0a237a9f5a03eef3/tests/test_receipt_attn.py).
