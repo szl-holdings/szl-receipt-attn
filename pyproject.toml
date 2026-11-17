@@ -8,11 +8,17 @@ requires-python = ">=3.9"
 authors = [
   { name = "Stephen P. Lutar Jr. / SZL Holdings" },
 ]
-urls = { Homepage = "https://a-11-oy.com" }
-classifiers = ["Private :: Do Not Upload"]
+urls = { Homepage = "https://a-11-oy.com", Source = "https://github.com/szl-holdings/szl-receipt-attn", Repository = "https://github.com/szl-holdings/szl-receipt-attn" }
 
 [tool.pytest.ini_options]
 markers = [
   "kernels_ci: kernel-builder CI tests (keep the marked set under 60s)",
 ]
 testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["torch-ext"]
