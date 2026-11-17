@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: Apache-2.0
+# This repository publishes Kernel Hub artifacts only. No PyPI release authority.
+name: Verify Kernel Hub-only distribution boundary
+
+on:
+  pull_request:
+    paths:
+      - pyproject.toml
+      - .github/workflows/**
+      - tests/test_layout.py
+  push:
+    branches: [main]
+    paths:
+      - pyproject.toml
+      - .github/workflows/**
+      - tests/test_layout.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Kernel Hub-only (no PyPI publisher)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout source without persisting credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Use Python for metadata inspection
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Verify non-publishable package and absence of PyPI release effectors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import tomllib
+          project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]
+          assert project["name"] == "szl-receipt-attn", "unexpected package identity"
+          assert "Private :: Do Not Upload" in project.get("classifiers", []), "PyPI prohibition missing"
+          workflows = Path(".github/workflows")
+          assert not (workflows / "publish-pypi.yml").exists(), "PyPI publisher unexpectedly present"
+          publisher = re.compile(r"""(?m)^\s*(?:-\s*)?uses:\s*[\x27\x22]?pypa/gh-action-pypi-publish@""")
+          # Regression control: exact executable action must still be rejected.
+          assert publisher.search("  - uses: pypa/gh-action-pypi-publish@v1")
+          for wf in list(workflows.glob("*.yml")) + list(workflows.glob("*.yaml")):
+              assert not publisher.search(wf.read_text(encoding="utf-8")), (
+                  f"PyPI publish effector found in {wf.name}"
+              )
+          print("PASS: Kernel Hub source only; no GitHub PyPI publication workflow")
+          PY

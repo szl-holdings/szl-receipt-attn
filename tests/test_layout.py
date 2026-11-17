@@ -68,6 +68,16 @@ def test_superseded_modules_removed():
 
 
 @pytest.mark.kernels_ci
+def test_hf_only_distribution_has_no_pypi_publisher():
+    """The org-wide release manifest marks this Kernel Hub source as never-PyPI."""
+    pyproject = (_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'classifiers = ["Private :: Do Not Upload"]' in pyproject
+    workflows = _ROOT / ".github" / "workflows"
+    assert not (workflows / "publish-pypi.yml").exists()
+    assert (workflows / "verify-hf-only-distribution.yml").is_file()
+
+
+@pytest.mark.kernels_ci
 def test_flake_pytest_is_check_input_only():
     text = (_ROOT / "flake.nix").read_text(encoding="utf-8")
     assert "pythonCheckInputs" in text

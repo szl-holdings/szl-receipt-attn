@@ -5,6 +5,9 @@ description = "Original SZL Triton tiled fused attention with SHA3-256 receipts"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.9"
+# This is a Hugging Face Kernel Hub source project, not a PyPI distribution.
+# Org release policy classifies it as never-publish (the wheel is incomplete).
+classifiers = ["Private :: Do Not Upload"]
 authors = [
   { name = "Stephen P. Lutar Jr. / SZL Holdings" },
 ]

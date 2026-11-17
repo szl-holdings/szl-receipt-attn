@@ -25,6 +25,24 @@ Original SZL construction in the fused-attention category. Inspired by Dao et al
 GitHub bytes are the artifact. The Hub is the publish target, written only by this
 repository's [`hf-kernel-publish`](.github/workflows/hf-kernel-publish.yml) workflow.
 
+## Distribution and release boundary
+
+This repository is governed as **Hugging Face Kernel Hub source only**. The
+organization PyPI release-path manifest classifies `szl-receipt-attn` as
+`never`: the current Python wheel layout is not a qualified public
+package. The `Private :: Do Not Upload` marker and the read-only
+`verify-hf-only-distribution.yml` gate enforce that distinction. There is
+no PyPI Trusted Publisher workflow, OIDC publication credential, or
+PyPI release route from this repository. The existing reviewed
+`hf-kernel-publish.yml` flow remains the sole governed Kernel Hub
+publication path; this source change does not dispatch that flow.
+
+A future PyPI distribution requires an explicit owner decision to
+reclassify the project, qualified nonempty wheel/source metadata,
+separate versioned package tests, and a reviewed canonical Trusted
+Publishing workflow. A green source test does not authorize a release or
+establish live Hub revision parity.
+
 ## Load
 
 ```python
