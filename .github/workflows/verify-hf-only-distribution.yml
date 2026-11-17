@@ -39,14 +39,18 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
+          import re
           import tomllib
           project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]
           assert project["name"] == "szl-receipt-attn", "unexpected package identity"
           assert "Private :: Do Not Upload" in project.get("classifiers", []), "PyPI prohibition missing"
           workflows = Path(".github/workflows")
           assert not (workflows / "publish-pypi.yml").exists(), "PyPI publisher unexpectedly present"
+          publisher = re.compile(r"""(?m)^\s*(?:-\s*)?uses:\s*[\x27\x22]?pypa/gh-action-pypi-publish@""")
+          # Regression control: exact executable action must still be rejected.
+          assert publisher.search("  - uses: pypa/gh-action-pypi-publish@v1")
           for wf in list(workflows.glob("*.yml")) + list(workflows.glob("*.yaml")):
-              assert "pypa/gh-action-pypi-publish" not in wf.read_text(encoding="utf-8"), (
+              assert not publisher.search(wf.read_text(encoding="utf-8")), (
                   f"PyPI publish effector found in {wf.name}"
               )
           print("PASS: Kernel Hub source only; no GitHub PyPI publication workflow")
